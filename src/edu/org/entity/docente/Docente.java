@@ -5,17 +5,35 @@
  */
 package edu.org.entity.docente;
 
+import edu.org.entity.materia.Materia;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import org.cris.cc.dao.AbstractEntity;
+
 /**
  *
  * @author Usuario
  */
-public class Docente {
+@Entity
+@Table(name = "docentes")
+
+public class Docente extends AbstractEntity {
+
     private String nombre;
     private String apellido;
     private String cedula;
     private String genero;
-    private String edad;
+    private int edad;
+    private Materia materia;
 
+    @Column(name = "nombre", nullable = false)
     public String getNombre() {
         return nombre;
     }
@@ -24,6 +42,7 @@ public class Docente {
         this.nombre = nombre;
     }
 
+    @Column(name = "apellido", nullable = false)
     public String getApellido() {
         return apellido;
     }
@@ -32,6 +51,7 @@ public class Docente {
         this.apellido = apellido;
     }
 
+    @Column(name = "cedula", nullable = false, unique = true)
     public String getCedula() {
         return cedula;
     }
@@ -40,6 +60,7 @@ public class Docente {
         this.cedula = cedula;
     }
 
+    @Column(name = "genero", nullable = false)
     public String getGenero() {
         return genero;
     }
@@ -48,14 +69,30 @@ public class Docente {
         this.genero = genero;
     }
 
-    public String getEdad() {
+    @Column(name = "edad", nullable = false)
+    public int getEdad() {
         return edad;
     }
 
-    public void setEdad(String edad) {
+    public void setEdad(int edad) {
         this.edad = edad;
     }
-    
-    
-    
+
+    @JoinColumn(name = "fkMateria")
+    @ManyToOne(targetEntity = Materia.class, fetch = FetchType.EAGER)
+    public Materia getMateria() {
+        return materia;
+    }
+
+    public void setMateria(Materia materia) {
+        this.materia = materia;
+    }
+
+    @Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long getId() {
+        return id;
+    }
+
 }
